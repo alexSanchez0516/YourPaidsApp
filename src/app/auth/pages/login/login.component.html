@@ -1,0 +1,56 @@
+<div style="margin-top: 3rem">
+  <form
+    (ngSubmit)="login()"
+    [formGroup]="loginForm"
+    fxLayout="column wrap"
+    fxLayoutGap="1.5rem">
+
+    <mat-form-field >
+      <mat-label>Email </mat-label>
+      <input matInput formControlName="email">
+      <mat-error *ngIf="campoIsInvalid('email')">
+        Por favor, introduce un email válido
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field >
+      <mat-label>Escribe tu contraseña</mat-label>
+      <input formControlName="password" matInput [type]="hide ? 'password' : 'text'">
+      <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+        <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+      </button>
+      <mat-error *ngIf="campoIsInvalid('password')">
+        Por favor, la contraseña debe tener mínimo 6 caracteres
+      </mat-error>
+    </mat-form-field>
+
+    <div fxLayout="column"
+          fxLayoutGap="1rem">
+      <button
+        (click)="login()"
+        mat-button
+        mat-raised-button
+        color="primary"
+        style="padding: 1rem;">
+        <mat-icon>login</mat-icon>
+      </button>
+
+      <button
+        mat-button
+        style="padding: 1rem;">
+        <mat-icon style="width: 50px; height:30px"
+                  svgIcon="logo"></mat-icon> Iniciar con Google
+      </button>
+
+    </div>
+  </form>
+
+  <swal
+    title="Credenciales incorrectas"
+    icon="error"
+    *ngIf="isCredentialError"
+    [swalFireOnInit]="true"
+    (didClose)="isCredentialError = false">
+  </swal>
+
+</div>

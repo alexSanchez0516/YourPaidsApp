@@ -1,0 +1,116 @@
+<div fxLayout="column"
+     fxLayoutGap="1rem"
+     class="mt-3 align-items-center animate__animated animate__fadeInLeftBig">
+
+  <h1 class="">Movimientos</h1>
+
+  <form [formGroup]="formFilter"
+        fxLayout="column wrap"
+        (ngSubmit)="filter()"
+        fxLayoutGap="1.5rem">
+
+    <div>
+      <button mat-button
+              mat-raised-button
+              routerLink="/app/inicio">Volver</button>
+    </div>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Buscar por año</mat-label>
+      <mat-select formControlName="year">
+        <mat-option *ngFor="let year of years;let i = index"
+                    [value]="year">{{year}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Buscar por mes</mat-label>
+      <mat-select formControlName="month">
+
+        <mat-option *ngFor="let month of months;let i = index"
+                    [value]="i">{{month}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+
+    <mat-form-field appearance="fill">
+      <mat-label>Buscar por categoría</mat-label>
+      <mat-select formControlName="category">
+
+        <ng-container *ngIf="stateIndexAmount==0;else containerEntrancesCategory">
+          <mat-option [value]="null">
+            Ninguna
+          </mat-option>
+        <mat-option *ngFor="let category of categories.spents"
+                    [value]="category.id">
+          <mat-icon color="accent">{{category.img_url}}</mat-icon>
+          {{category.name}}
+        </mat-option>
+        </ng-container>
+
+        <ng-template #containerEntrancesCategory>
+          <mat-option [value]="null">
+            Ninguna
+          </mat-option>
+          <mat-option *ngFor="let category of categories.entrances;"
+                      [value]="category.id">
+            <mat-icon color="accent">{{category.img_url}}</mat-icon>
+            {{category.name}}
+          </mat-option>
+        </ng-template>
+      </mat-select>
+    </mat-form-field>
+
+    <section fxLayout="column">
+      <mat-label>Por estado pagado</mat-label>
+      <mat-checkbox  formControlName="paid" class="example-margin" >Pagado</mat-checkbox>
+    </section>
+    <button mat-raised-button color="accent">Buscar</button>
+  </form>
+  <hr>
+  <mat-tab-group [backgroundColor]="'accent'"
+                 [color]="'primary'"
+                 (selectedIndexChange)="changeSelectedTypeAmount($event)"
+                 animationDuration="1000ms">
+    <mat-tab fxLayout="column"
+             fxLayoutGap="1rem"
+             label="Gastos">
+
+      <div fxLayout="row" class="mt-4" fxLayoutAlign="center center">
+        <mat-spinner *ngIf="isLoading"></mat-spinner>
+        <ng-container *ngIf="notResult">
+          No hay resultados
+        </ng-container>
+      </div>
+      <div class="row justify-content-center m-2">
+          <app-card-amount class="col-12 "
+                           [type]="0"
+                           [loading]="isLoading"
+                           *ngFor="let amount of amounts.spents" [amount]="amount">
+          </app-card-amount>
+      </div>
+
+    </mat-tab>
+
+    <mat-tab fxLayout="column"
+             fxLayoutGap="1rem"
+             label="Ingresos">
+
+      <div fxLayout="row" class="mt-4" fxLayoutAlign="center center">
+        <mat-spinner *ngIf="isLoading"></mat-spinner>
+        <ng-container *ngIf="notResult">
+          No hay resultados
+        </ng-container>
+      </div>
+      <div class="row justify-content-center m-2">
+        <app-card-amount class="col-12 "
+                         [loading]="isLoading"
+                         [type]="1"
+                         *ngFor="let amount of amounts.entrances" [amount]="amount">
+        </app-card-amount>
+      </div>
+
+    </mat-tab>
+  </mat-tab-group>
+
+</div>

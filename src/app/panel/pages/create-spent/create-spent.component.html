@@ -1,0 +1,22 @@
+<div
+  fxLayout="column"
+  fxLayoutAlign="center center"
+  style="margin-top: 3rem"
+  class="animate__animated animate__backInDown"
+>
+  <h2
+    *ngIf="amount.user; else CrearNuevo"
+    class="bg-success w-100 p-2 text-light text-center">Edita gasto</h2>
+  <ng-template #CrearNuevo>
+    <h2 class="bg-success w-100 p-2 text-light text-center">Añadir gasto</h2>
+  </ng-template>
+  <app-amount-form (OnAmount)="save($event)"
+                   style="width: 100%"
+                   [amount]="amount"
+                   [categories]="categories"
+                   (onDelete)="delete($event)"
+  >
+
+  </app-amount-form>
+
+</div>

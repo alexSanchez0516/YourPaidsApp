@@ -1,0 +1,86 @@
+<div fxLayout="column"
+     fxLayoutAlign="center center"
+     fxLayoutGap="1rem"
+     style="margin-top: 3rem">
+  <form
+    (ngSubmit)="save()"
+    [formGroup]="registerForm"
+    fxLayout="column wrap"
+    fxLayoutGap="1.5rem"
+  >
+    <mat-form-field >
+      <mat-label>Usuario </mat-label>
+      <input matInput formControlName="username">
+      <mat-error *ngIf="campoIsInvalid('username')">
+        Por favor, el usuario debe tener mínimo 4 caracteres
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field >
+      <mat-label>Email </mat-label>
+      <input matInput formControlName="email">
+      <mat-error *ngIf="campoIsInvalid('email')">
+        Por favor, introduce una dirección de correo electrónico válida
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field >
+      <mat-label>Escribe tu contraseña</mat-label>
+      <input matInput [type]="hide ? 'password' : 'text'" formControlName="password1">
+      <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+        <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+      </button>
+      <mat-error *ngIf="campoIsInvalid('password1')">
+        Por favor, la contraseña debe tener mínimo 6 caracteres
+      </mat-error>
+    </mat-form-field>
+
+
+    <mat-form-field >
+      <mat-label>Repite tu contraseña</mat-label>
+      <input matInput [type]="hide ? 'password' : 'text'" formControlName="password2">
+      <button mat-icon-button
+              matSuffix (click)="hide = !hide"
+              [attr.aria-label]="'Hide password'"
+              [attr.aria-pressed]="hide"
+      >
+        <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+      </button>
+      <mat-error *ngIf="campoIsInvalid('password2')">
+        Por favor, deben coincidir las contraseñas
+      </mat-error>
+
+    </mat-form-field>
+
+
+
+    <div fxLayout="column"
+         fxLayoutGap="1rem">
+
+      <button mat-button
+              mat-raised-button
+              color="primary"
+              style="padding: 1rem;">
+        <mat-icon>login</mat-icon>
+      </button>
+
+
+      <button mat-button style="padding: 1rem;">
+        <mat-icon style="width: 50px; height:30px"
+                  svgIcon="logo"></mat-icon> Continuar con Google
+      </button>
+
+    </div>
+
+  </form>
+
+  <mat-spinner *ngIf="authRegisterResponse"></mat-spinner>
+  <swal
+    [title]="authRegisterResponseMessage"
+    [icon]="authRegisterResponseIcon"
+    *ngIf="authRegisterResponse"
+    [swalFireOnInit]="true"
+    (didClose)="authRegisterResponse = false">
+  </swal>
+</div>
+

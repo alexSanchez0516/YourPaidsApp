@@ -1,0 +1,29 @@
+
+  <mat-card fxLayout="column" class="mt-2 "
+            fxLayoutAlign="center center">
+    <mat-card-header>
+      <mat-card-title>Concepto: {{amount.name}} </mat-card-title>
+      <mat-card-subtitle class="text-decoration-underline" >Categoría: {{findCategory(amount.category).name!}}</mat-card-subtitle>
+      <mat-card-subtitle>Fecha creación: {{amount.create_at | date }}</mat-card-subtitle>
+      <mat-card-subtitle >Pagado: {{amount.paid ? 'Sí' : 'No' }}</mat-card-subtitle>
+      <mat-card-subtitle >Fecha de pago: {{amount.date_paid | date }}</mat-card-subtitle>
+    </mat-card-header>
+    <img class="img-fluid   mt-2"
+         style="max-width: 100px;height: 65px"
+         mat-card-image *ngIf="amount.img_url;else noImg" src="{{amount.img_url}}" alt="">
+    <ng-template #noImg>
+      <mat-icon class="icon-display m-4">payments</mat-icon>
+    </ng-template>
+    <mat-card-content class="mt-1">
+      <p>
+        Detalle: {{amount.details}}
+      </p>
+    </mat-card-content>
+    <mat-card-actions fxLayout="row" fxLayoutGap="10px">
+      <button *ngIf="type == 0; else goToEntranceLinkBtn" mat-raised-button routerLink="/app/editar-gasto/{{amount._id}}" color="accent">Ver</button>
+      <ng-template #goToEntranceLinkBtn>
+        <button mat-raised-button routerLink="/app/editar-ingreso/{{amount._id}}" color="accent">Ver</button>
+      </ng-template>
+      <button mat-raised-button color="warn">Eliminar</button>
+    </mat-card-actions>
+  </mat-card>

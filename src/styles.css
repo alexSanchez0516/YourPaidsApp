@@ -1,0 +1,21 @@
+/* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+.icon-display {
+  transform: scale(2);
+}
+
+
+.bg-box-primary {
+  background-color: #7b1fa2;
+  padding: .5rem;
+}
+.color-box-primary {
+  color: #7b1fa2;
+}
+
+.pointer {
+  cursor: pointer;
+}
+

@@ -1,0 +1,66 @@
+<div fxLayout="column"
+     fxLayoutGap="1rem"
+     class="mt-3 align-items-center animate__animated animate__fadeInLeftBig">
+
+  <h1 class="">Reportes</h1>
+
+
+  <form [formGroup]="formFilter"
+        fxLayout="column wrap"
+        (ngSubmit)="filterData()"
+        fxLayoutGap="1.5rem">
+
+    <div>
+      <button mat-button
+              mat-raised-button
+              routerLink="/app/inicio">Volver</button>
+    </div>
+
+
+    <mat-form-field appearance="fill">
+      <mat-label>Buscar por año</mat-label>
+      <mat-select formControlName="year">
+        <mat-option *ngFor="let year of years;let i = index"
+                    [value]="year">{{year}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+
+    <mat-form-field appearance="fill" *ngIf="indexSelected==1">
+      <mat-label>Buscar por mes</mat-label>
+      <mat-select formControlName="month">
+
+        <mat-option *ngFor="let month of months;let i = index"
+                    [value]="i">{{month}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" *ngIf="indexSelected==1">
+      <mat-label>Buscar por Tipo</mat-label>
+      <mat-select formControlName="typeAmount">
+
+        <mat-option [value]="0">Gastos</mat-option>
+        <mat-option [value]="0">Ingresos</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+  </form>
+
+
+  <hr>
+
+  <div class="row w-100 justify-content-center">
+    <mat-tab-group [(selectedIndex)]="indexSelected" animationDuration="0ms" color="accent">
+      <mat-tab label="Por año">
+        <mat-spinner class="justify-content-center" style="margin: 0 auto" *ngIf="isLoading"></mat-spinner>
+        <h2 class="text-center">Reportes de Gastos e ingresos por mes/año</h2>
+        <app-line-chart [filterYear]="formFilter.controls.year.value!" [filterMonth]="formFilter.controls.month.value!"></app-line-chart>
+      </mat-tab>
+      <mat-tab label="Por mes/año/categoria">
+        <mat-spinner *ngIf="isLoading" style="margin: 0 auto"></mat-spinner>
+        <h2 class="text-center mt-md-5 mt-2">Reportes de Gastos e ingresos por categoria</h2>
+        <app-pie-chart style="max-width: 700px" [filterYear]="formFilter.controls.year.value!" [filterMonth]="formFilter.controls.month.value!"></app-pie-chart>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>

@@ -1,0 +1,145 @@
+<div
+  fxLayout="column wrap"
+  style="margin-top: 2rem;width:100%;">
+  <form
+    (ngSubmit)="create()"
+    [formGroup]="formAmount"
+    class="w-100"
+    fxLayout="column wrap"
+    fxLayoutGap="1.5rem"
+  >
+    <div>
+      <button mat-button
+              mat-raised-button
+              routerLink="/app/inicio">Volver</button>
+    </div>
+    <div fxLayout="row" class="50" fxLayoutAlign="center center">
+      <img *ngIf="imgName.length === 0; else imgAmount"
+        [src]="amount.img_url" class="img-fluid" alt="">
+      <ng-template #imgAmount>
+        <img [src]="getSanitizeUrl(imgName)" class="img-fluid" alt="">
+      </ng-template>
+    </div>
+
+    <mat-form-field class="w-100">
+      <mat-label>Concepto </mat-label>
+      <input matInput formControlName="name">
+      <mat-error *ngIf="campoIsInvalid('name')">
+        Por favor, introduce un concepto válido
+      </mat-error>
+    </mat-form-field>
+
+
+    <mat-form-field class="w-100">
+      <mat-label>Detalles </mat-label>
+      <textarea matInput formControlName="details" placeholder="Detalles..."></textarea>
+      <mat-error *ngIf="campoIsInvalid('details')">
+        Por favor, introduce un datalle válido
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="w-100">
+      <mat-label>Importe </mat-label>
+      <input matInput formControlName="quantity">
+      <mat-error *ngIf="campoIsInvalid('quantity')">
+        Por favor, introduce un importe válido
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="w-100" appearance="fill">
+      <mat-label>Categoría</mat-label>
+      <mat-select formControlName="category"   [errorStateMatcher]="matcher">
+        <mat-option *ngFor="let category of categories" [value]="category.id">
+          <mat-icon color="accent">{{category.img_url}}</mat-icon>
+          {{category.name}}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="campoIsInvalid('category')">
+        Por favor, introduce una categoría
+      </mat-error>
+    </mat-form-field>
+
+
+    <mat-form-field class="w-100" appearance="fill">
+      <mat-label>Fecha</mat-label>
+      <input matInput [matDatepicker]="picker"
+        formControlName="create_at"
+      >
+      <mat-hint>MM/DD/YYYY</mat-hint>
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+
+      <mat-error *ngIf="campoIsInvalid('create_at')">
+        Por favor, introduce una fecha
+      </mat-error>
+
+    </mat-form-field>
+
+    <div class="input-group mb-3 w-100">
+      <mat-icon>add_photo_alternate</mat-icon>
+      <input type="file" #file (change)="setImgSend($event)" formControlName="img_url"
+             class="form-control" >
+    </div>
+
+    <mat-radio-group formControlName="paid" aria-label="Select an option">
+      <mat-label>¿Está pagado?</mat-label>
+      <mat-radio-button [value]=true>Sí</mat-radio-button>
+      <mat-radio-button [value]=false>No</mat-radio-button>
+    </mat-radio-group>
+
+
+
+    <mat-form-field class="w-100" *ngIf="checkPaid()" appearance="fill">
+      <mat-label>Fecha de pago/ingreso</mat-label>
+      <input matInput [matDatepicker]="picker"
+             formControlName="date_paid"
+      >
+      <mat-hint>MM/DD/YYYY</mat-hint>
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+
+      <mat-error *ngIf="campoIsInvalid('date_paid')">
+        Por favor, introduce una fecha válida
+      </mat-error>
+
+    </mat-form-field>
+
+
+    <div fxLayout="row" class="justify-content-between">
+
+      <div fxLayout="row" fxLayoutGap="1rem">
+        <button mat-raised-button routerLink="/app/inicio" color="primary">Cancelar</button>
+        <button *ngIf="amount.user"
+                (click)="this.isDelete = true"
+                mat-raised-button
+                class="bg-danger"
+                type="button"
+                title="Eliminar">
+          <mat-icon>
+            delete
+          </mat-icon>
+        </button>
+      </div>
+
+      <button mat-raised-button type="submit" class="bg-success">Guardar</button>
+    </div>
+
+    <swal
+      title="¿Seguro que deseas eliminarlo?"
+      icon="error"
+      *ngIf="isDelete"
+      cancelButtonText="Cancelar"
+      confirmButtonText="Eliminar"
+      confirmButtonColor="red"
+      [swalFireOnInit]="true"
+      icon="warning"
+      [showCancelButton]="true"
+      [focusCancel]="true"
+      (confirm)="delete()"
+      (didClose)="isDelete = false">
+    </swal>
+  </form>
+</div>
+
+
+<span class="m-2">{{formAmount.value | json}}</span>

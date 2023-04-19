@@ -1,0 +1,26 @@
+<div fxLayout="row wrap "
+     fxLayoutAlign="center center"
+
+>
+  <mat-card *ngFor="let routeGo of routes"
+    fxLayout="column"
+    fxLayoutAlign="center center"
+    fxFlex="35"
+    fxFlex.lg="25"
+    fxLayoutGap="1rem"
+    [routerLink]="routeGo.url"
+    class="m-2 pointer">
+    <mat-card-header fxLayout="row">
+      <mat-icon class="text-success icon-display mx-2">{{routeGo.icon2}}</mat-icon>
+      <mat-icon class="mx-2">{{routeGo.icon}}</mat-icon>
+    </mat-card-header>
+    <mat-card-content
+      fxLayout="column"
+      fxLayoutAlign="center center"
+    >
+      <span class="text-center">{{routeGo.text}}</span>
+    </mat-card-content>
+  </mat-card>
+
+</div>
+
