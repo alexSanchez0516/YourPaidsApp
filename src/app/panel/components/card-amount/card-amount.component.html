@@ -3,6 +3,12 @@
             fxLayoutAlign="center center">
     <mat-card-header>
       <mat-card-title>Concepto: {{amount.name}} </mat-card-title>
+
+      <mat-card-subtitle *ngIf="currency == '€'; else elseTemplate" >Importe: {{amount.quantity| currency: "EUR":"symbol" }}</mat-card-subtitle>
+      <ng-template #elseTemplate>
+      <mat-card-subtitle >Importe: {{amount.quantity| currency}}</mat-card-subtitle>
+      </ng-template>
+
       <mat-card-subtitle class="text-decoration-underline" >Categoría: {{findCategory(amount.category).name!}}</mat-card-subtitle>
       <mat-card-subtitle>Fecha creación: {{amount.create_at | date }}</mat-card-subtitle>
       <mat-card-subtitle >Pagado: {{amount.paid ? 'Sí' : 'No' }}</mat-card-subtitle>
@@ -24,6 +30,29 @@
       <ng-template #goToEntranceLinkBtn>
         <button mat-raised-button routerLink="/app/editar-ingreso/{{amount._id}}" color="accent">Ver</button>
       </ng-template>
-      <button mat-raised-button color="warn">Eliminar</button>
+      <button
+                (click)="this.isDelete = true"
+                mat-raised-button
+                class="bg-danger"
+                type="button"
+                title="Eliminar">
+          <mat-icon>
+            delete
+          </mat-icon>
+      </button>
     </mat-card-actions>
   </mat-card>
+  <swal
+  title="¿Seguro que deseas eliminarlo?"
+  icon="error"
+  *ngIf="isDelete"
+  cancelButtonText="Cancelar"
+  confirmButtonText="Eliminar"
+  confirmButtonColor="red"
+  [swalFireOnInit]="true"
+  icon="warning"
+  [showCancelButton]="true"
+  [focusCancel]="true"
+  (confirm)="deleteCard(amount._id!)"
+  (didClose)="isDelete = false">
+</swal>

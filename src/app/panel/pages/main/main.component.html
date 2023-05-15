@@ -6,18 +6,35 @@
        fxLayoutGap="10px"
        fxLayoutAlign="center center" class="mb-3">
 
-    <mat-chip
-      class="mat-mdc-chip-set-stacked"
-    >
-      Balance del mes {{balanceMonth | currency}}
-    </mat-chip>
+    <ng-container *ngIf="currency == '€'; else elseTemplate">
+      <mat-chip class="mat-mdc-chip-set-stacked">
+        Balance del mes {{balanceMonth | currency:'€'}}
+      </mat-chip>
+      <mat-chip class="mat-mdc-chip-set-stacked">
+        Balance general {{balance | currency:'€'}}
+      </mat-chip>
+    </ng-container>
+    <ng-template #elseTemplate>
+      <mat-chip class="mat-mdc-chip-set-stacked">
+        Balance del mes {{balanceMonth | currency}}
+      </mat-chip>
+      <mat-chip class="mat-mdc-chip-set-stacked">
+        Balance general {{balance | currency}}
+      </mat-chip>
+    </ng-template>
 
-    <mat-chip
-      class="mat-mdc-chip-set-stacked"
-      >
-      Balance general {{balance | currency}}
-    </mat-chip>
-    <button mat-raised-button class="p-1">Contabilizar todo</button>
+
+
+
+    <ng-container *ngIf="allBalancePaids; else elseTemplateContabil">
+      <button id="contabil" (click)="accountForEverything()" mat-raised-button class="p-1">Contabilizar todo</button>
+    </ng-container>
+    <ng-template #elseTemplateContabil>
+      <button id="contabil" (click)="accountForEverything()" mat-raised-button class="p-1">Contabilizar solo pagado</button>
+
+    </ng-template>
+
+
   </div>
 
   <div class="bg-success"
@@ -64,7 +81,11 @@
                     routerLink="/app/editar-gasto/{{spent._id}}">
                 <strong>Concepto: </strong>{{spent.name}}
               </div>
-              <div matListItemLine>Importe: {{spent.quantity | currency}}</div>
+              <div matListItemLine *ngIf="currency == '€';else currencyTemplate">Importe: {{spent.quantity | currency:'€'}}</div>
+              <ng-template #currencyTemplate>
+                <div matListItemLine>Importe: {{spent.quantity | currency}}</div>
+              </ng-template>
+
               <div matListItemLine>Fecha creación: {{spent.create_at | date}}</div>
               <div matListItemLine>Fecha de pago: {{spent.date_paid | date}}</div>
             </div>
@@ -85,7 +106,10 @@
                     routerLink="/app/editar-ingreso/{{entrance._id}}">
                 <strong>Concepto: </strong>{{entrance.name}}
               </div>
-              <div matListItemLine>Importe: {{entrance.quantity | currency}}</div>
+              <div matListItemLine *ngIf="currency == '€';else currencyTemplate">Importe: {{entrance.quantity | currency:'€'}}</div>
+              <ng-template #currencyTemplate>
+                <div matListItemLine>Importe: {{entrance.quantity | currency}}</div>
+              </ng-template>
               <div matListItemLine>Fecha creación: {{entrance.create_at | date}}</div>
               <div matListItemLine>Fecha de pago: {{entrance.date_paid | date}}</div>
             </div>

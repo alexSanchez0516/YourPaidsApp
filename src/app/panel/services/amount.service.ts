@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {Amount, ResponseAllAmounts} from "../interfaces/interfaces";
+import {Amount, ResponseAllAmounts, listSpent} from "../interfaces/interfaces";
 import {environment} from "../../../environments/environment";
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -29,6 +30,18 @@ export class AmountService {
 
   constructor(private http: HttpClient,
 ) {
+  }
+
+
+  public getSpentsByRangeDate(start: Date, end: Date, category: number) : Observable<listSpent> {
+    let idUser = localStorage.getItem('uid') || '';
+    let url = `${environment.endpoint}/app/spents/date/user?id=${idUser}&start_date=${start}&end_date=${end}&category_id=${category}`;
+    console.log(url);
+    return this.http.get<listSpent>(url);
+
+    // http://127.0.0.1:4000/api/app/spents/
+    // date/user?id=638f177c8ca8abefb38d762e&start_date=2023-04-26T18:27:42.740+00:00&end_date=2023-04-27T18:27:42.740+00:00
+
   }
 
   /**
@@ -133,6 +146,59 @@ export class AmountService {
 
     return response;
   }
+
+
+    /**
+   *
+   * @param amounts
+   * @param paid
+   * @param year
+   * @constructor
+   */
+    GetSpentAndEntrancesByRecurring(amounts: ResponseAllAmounts, year?: number): ResponseAllAmounts {
+      const response: ResponseAllAmounts = {
+        entrances:[],
+        spents: []
+      }
+
+      if (year == undefined) {
+        year = this.current.getFullYear();
+      }
+
+
+      response.entrances = [ ...amounts.entrances.filter((entrance) => (entrance.createByRecurringService == undefined
+        || entrance.createByRecurringService == null || !entrance.createByRecurringService && entrance.recurrent))];
+
+      response.spents = [ ...amounts.spents.filter((spent) => (spent.createByRecurringService == undefined
+        || spent.createByRecurringService == null || !spent.createByRecurringService) && spent.recurrent)];
+
+      return response;
+    }
+
+
+     /**
+   *
+   * @param amounts
+   * @param paid
+   * @param year
+   * @constructor
+   */
+     GetSpentAndEntrancesByRecurringCreated(amounts: ResponseAllAmounts, year?: number): ResponseAllAmounts {
+      const response: ResponseAllAmounts = {
+        entrances:[],
+        spents: []
+      }
+
+      if (year == undefined) {
+        year = this.current.getFullYear();
+      }
+
+      response.entrances = [ ...amounts.entrances.filter((entrance) => entrance.createByRecurringService)];
+
+      response.spents = [ ...amounts.spents.filter((spent) => spent.createByRecurringService)];
+
+      return response;
+    }
 
 
   GerSpentAndEntrancesByCategory(amounts: ResponseAllAmounts,categoryId: number, year?: number): ResponseAllAmounts {

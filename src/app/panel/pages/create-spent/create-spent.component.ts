@@ -3,7 +3,9 @@ import {Amount, Category} from "../../interfaces/interfaces";
 import {PanelService} from "../../services/panel.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {SpentService} from "../../services/spent.service";
-import {alertSuccessTimerShowHide} from "../../../utils/alerts";
+import { alertError, alertSuccessTimerShowHide} from "../../../utils/alerts";
+import { DaemonControlService } from '../../services/daemon-control.service';
+import { FirebaseStorageService } from 'src/app/services/firebase-storage.service';
 
 @Component({
   selector: 'app-create-spent',
@@ -20,7 +22,7 @@ export class CreateSpentComponent implements OnInit{
     quantity: 0,
     user: "",
     paid: false,
-    date_paid: undefined
+    date_paid: new Date
   }
   update: boolean = false;
   url_public: string = '';
@@ -28,7 +30,9 @@ export class CreateSpentComponent implements OnInit{
   constructor(private panelService: PanelService,
               private activatedRouter: ActivatedRoute,
               private spentService: SpentService,
-              private router: Router) {
+              private router: Router,
+              private daemonControl: DaemonControlService,
+              private firebaseStorageService: FirebaseStorageService) {
   }
 
   ngOnInit(): void {
@@ -84,6 +88,7 @@ export class CreateSpentComponent implements OnInit{
         .subscribe({
           next: () => {
             alertSuccessTimerShowHide('Guardado correctamente');
+            this.daemonControl.checkControl(this.amount.category);
             this.router.navigate(['./app/inicio']);
           },
           error: (error: any) => {
@@ -94,13 +99,20 @@ export class CreateSpentComponent implements OnInit{
   }
 
   delete($event: boolean) {
-    console.log('event: ', $event);
     if ($event && this.amount._id != undefined) {
       this.spentService.delete(this.amount._id)
         .subscribe({
           next: (resp) => {
-            alertSuccessTimerShowHide("Eliminado correctamente");
-            this.router.navigate(['./app/inicio']);
+
+            if (resp.status == 'success') {
+              try {
+                this.firebaseStorageService.delete(resp.data.img_url!);
+              } catch (error) {
+                alertError(`Error deleting ${resp.data.img_url} firebase storage, error: ${error}`);
+              }
+              alertSuccessTimerShowHide("Eliminado correctamente");
+              this.router.navigate(['./app/inicio']);
+            }
           },
           error: (error) => {
             console.log(error);

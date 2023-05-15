@@ -31,21 +31,20 @@
       <mat-select formControlName="month">
 
         <mat-option *ngFor="let month of months;let i = index"
-                    [value]="i">{{month}}</mat-option>
+                    [value]="i-1">{{month}}</mat-option>
       </mat-select>
     </mat-form-field>
 
     <mat-form-field appearance="fill" *ngIf="indexSelected==1">
       <mat-label>Buscar por Tipo</mat-label>
       <mat-select formControlName="typeAmount">
-
+        <mat-option [value]="-1">Todos</mat-option>
         <mat-option [value]="0">Gastos</mat-option>
-        <mat-option [value]="0">Ingresos</mat-option>
+        <mat-option [value]="1">Ingresos</mat-option>
       </mat-select>
     </mat-form-field>
 
   </form>
-
 
   <hr>
 
@@ -59,7 +58,9 @@
       <mat-tab label="Por mes/año/categoria">
         <mat-spinner *ngIf="isLoading" style="margin: 0 auto"></mat-spinner>
         <h2 class="text-center mt-md-5 mt-2">Reportes de Gastos e ingresos por categoria</h2>
-        <app-pie-chart style="max-width: 700px" [filterYear]="formFilter.controls.year.value!" [filterMonth]="formFilter.controls.month.value!"></app-pie-chart>
+        <app-pie-chart style="max-width: 700px" [filterYear]="formFilter.controls.year.value!"
+        [filterMonth]="formFilter.controls.month.value!"
+        [typeAmount]="formFilter.controls.typeAmount.value!"></app-pie-chart>
       </mat-tab>
     </mat-tab-group>
   </div>

@@ -1,1 +1,73 @@
-<p>config-user works!</p>
+<div fxLayout="column"
+     fxLayoutGap="1rem"
+     class="mt-3 align-items-center animate__animated animate__fadeInLeftBig">
+
+     <button mat-button
+              mat-raised-button
+              routerLink="/app/inicio">Volver</button>
+  <h1 class="">Opciones</h1>
+
+  <div
+      fxLayout="column"
+     fxLayoutGap="1rem"
+     class="align-items-center">
+
+
+     <form [formGroup]="formConfig"
+     (ngSubmit)="save()"
+     fxLayout="column wrap"
+     fxLayoutGap="1.5rem">
+
+
+      <mat-radio-group aria-label="Selecciona moneda" formControlName="currency" fxLayout="column">
+        <label id="example-radio-group-label">Selecciona moneda</label>
+        <mat-radio-button value="€">€</mat-radio-button>
+        <mat-radio-button value="$">$</mat-radio-button>
+      </mat-radio-group>
+
+      <button mat-raised-button
+       matTooltip="Estos datos se guardan en caché , si borrá caché se pierde la configuración"
+       color="accent">Guardar</button>
+     </form>
+
+
+
+  <button
+    mat-raised-button
+    color=""
+    type="button"
+    (click)="support()"
+    title="suporte">Soporte
+    <mat-icon>
+      mail
+    </mat-icon>
+  </button>
+
+
+  <button mat-raised-button (click)="openBottomSheet()">Política de privacidad</button>
+
+
+  <button
+  mat-raised-button
+  color=""
+  [cdkCopyToClipboard]="sharedCopyLink"
+  type="button"
+  title="Compartir con amigos">Compartir con amigos
+  <mat-icon>
+    share
+  </mat-icon>
+</button>
+
+  <button
+  mat-raised-button
+  class="bg-danger"
+  type="button"
+  title="Eliminar cuenta">Eliminar cuenta
+    <mat-icon>
+    delete
+    </mat-icon>
+  </button>
+
+
+  </div>
+</div>

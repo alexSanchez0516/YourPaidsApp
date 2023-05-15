@@ -3,9 +3,8 @@ import {Amount, Category} from "../../interfaces/interfaces";
 import {PanelService} from "../../services/panel.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {EntranceService} from "../../services/entrance.service";
-import {alertSuccessTimerShowHide} from "../../../utils/alerts";
-import {FirebaseStorageService} from "../../../services/firebase-storage.service";
-import {StorageService} from "../../../services/storage.service";
+import {alertError, alertSuccessTimerShowHide} from "../../../utils/alerts";
+import { FirebaseStorageService } from 'src/app/services/firebase-storage.service';
 
 @Component({
   selector: 'app-create-entrance',
@@ -29,7 +28,8 @@ export class CreateEntranceComponent implements OnInit{
   constructor(private panelService: PanelService,
               private activatedRouter: ActivatedRoute,
               private entranceService: EntranceService,
-              private router: Router) {
+              private router: Router,
+              private firebaseStorageService: FirebaseStorageService) {
   }
 
   ngOnInit(): void {
@@ -98,8 +98,15 @@ export class CreateEntranceComponent implements OnInit{
       this.entranceService.delete(this.amount._id)
         .subscribe({
           next: (resp) => {
-            alertSuccessTimerShowHide("Eliminado correctamente");
-            this.router.navigate(['/app/inicio']);
+            if (resp.status === '200') {
+              try {
+                this.firebaseStorageService.delete(resp.data.img_url!);
+              } catch (error) {
+                alertError(`Error deleting ${resp.data.img_url} firebase storage, error: ${error}`);
+              }
+              alertSuccessTimerShowHide("Eliminado correctamente");
+              this.router.navigate(['/app/inicio']);
+            }
           },
           error: (error) => {
             console.log(error);

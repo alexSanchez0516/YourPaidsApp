@@ -16,6 +16,9 @@ import {notSpacer, onlyNumbers} from "../../../helpers/Patterns";
 import {DomSanitizer} from "@angular/platform-browser";
 import {FirebaseStorageService} from "../../../services/firebase-storage.service";
 import {alertError} from "../../../utils/alerts";
+import { v4 as uuidv4 } from "uuid";
+
+
 
 @Component({
   selector: 'app-amount-form',
@@ -61,6 +64,9 @@ export class AmountFormComponent implements OnInit, OnChanges{
       Validators.required,
       Validators.min(1)
     ],[]],
+    'recurrent': [false,[
+
+    ],[]],
     'create_at': [this.amount.create_at, [
       Validators.required
     ],[]],
@@ -94,10 +100,12 @@ export class AmountFormComponent implements OnInit, OnChanges{
       this.amount.category =  <number><unknown>this.formAmount.value.category;
       this.amount.user = localStorage.getItem('uid')!;
       this.amount.paid = <boolean>this.formAmount.get('paid')?.value;
+      this.amount.create_at = <Date><unknown>this.formAmount.get('create_at')?.value ;
       this.amount.date_paid = undefined ;
-
       if (this.amount.paid) {
         this.amount.date_paid = <Date><unknown>this.formAmount.get('date_paid')?.value ;
+        // console.log(this.formAmount.get('date_paid')?.value);return;
+        this.amount.recurrent = <boolean>this.formAmount.get('recurrent')?.value;
       }
 
       if (this.fileSend) {
@@ -109,9 +117,9 @@ export class AmountFormComponent implements OnInit, OnChanges{
               console.log(err);
             })
         }
-
+        const nameImg = `${uuidv4()}-${this.fileSend.name}`;
         let ref = this.firebaseStorage.referenciaCloudStorage(this.fileSend.name);
-        let task = this.firebaseStorage.tareaCloudStorage(this.fileSend.name, this.fileSend);
+        let task = this.firebaseStorage.tareaCloudStorage(nameImg, this.fileSend);
 
         task.percentageChanges()
           .subscribe((porcentaje) => {
@@ -126,7 +134,6 @@ export class AmountFormComponent implements OnInit, OnChanges{
                   },
                   error: (error) => {
                     alertError("Ha ocurrido un error en el proceso, vuelve intentar más tarde");
-                    console.log(error);
                   }
                 });
             }
@@ -146,7 +153,6 @@ export class AmountFormComponent implements OnInit, OnChanges{
 
       .subscribe({
         next: (res) => {
-          console.log(this.formAmount.get('img_url'));
           if (res) {
             if (this.file.nativeElement.files) {
               const file = this.file.nativeElement.files[0];
@@ -168,8 +174,10 @@ export class AmountFormComponent implements OnInit, OnChanges{
       if (this.amount.paid != null) {
         this.formAmount.get('paid')?.setValue(this.amount.paid);
         if (this.amount.date_paid) {
-          // @ts-ignore
           this.formAmount.get('date_paid')?.setValue(this.amount.date_paid);
+        }
+        if (this.amount.recurrent) {
+          this.formAmount.get('recurrent')?.setValue(this.amount.recurrent);
         }
       }
     }

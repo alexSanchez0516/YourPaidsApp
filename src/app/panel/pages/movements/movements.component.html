@@ -33,6 +33,15 @@
     </mat-form-field>
 
 
+    <mat-form-field class="w-100">
+      <mat-label>Buscar por concepto </mat-label>
+      <input matInput  placeholder="escribe un palabra clave..."/>
+      <!-- <mat-error *ngIf="campoIsInvalid('details')">
+        Por favor, introduce un datalle válido
+      </mat-error> -->
+    </mat-form-field>
+
+
     <mat-form-field appearance="fill">
       <mat-label>Buscar por categoría</mat-label>
       <mat-select formControlName="category">
@@ -65,6 +74,17 @@
       <mat-label>Por estado pagado</mat-label>
       <mat-checkbox  formControlName="paid" class="example-margin" >Pagado</mat-checkbox>
     </section>
+
+    <section fxLayout="column">
+      <mat-label>Buscar los marcados como recurrentes</mat-label>
+      <mat-checkbox  formControlName="recurring" class="example-margin" >Recurrentes</mat-checkbox>
+    </section>
+
+    <section fxLayout="column">
+      <mat-label>Buscar los creados por sistema recurrentes</mat-label>
+      <mat-checkbox  formControlName="create_recurring" class="example-margin" >Creados por como recurrentes</mat-checkbox>
+    </section>
+
     <button mat-raised-button color="accent">Buscar</button>
   </form>
   <hr>
@@ -84,9 +104,13 @@
       </div>
       <div class="row justify-content-center m-2">
           <app-card-amount class="col-12 "
+                          *ngFor="let amount of amounts.spents" [amount]="amount"
+                          (idAmount)="setidStringAmount(amount._id!)"
+                          (typeAmount)="deleteCard('0')"
                            [type]="0"
                            [loading]="isLoading"
-                           *ngFor="let amount of amounts.spents" [amount]="amount">
+                          >
+
           </app-card-amount>
       </div>
 
@@ -104,9 +128,13 @@
       </div>
       <div class="row justify-content-center m-2">
         <app-card-amount class="col-12 "
-                         [loading]="isLoading"
+                        *ngFor="let amount of amounts.entrances"
+                        [amount]="amount"
+                        [loading]="isLoading"
+                        (idAmount)="setidStringAmount(amount._id!)"
+                        (typeAmount)="deleteCard('1')"
                          [type]="1"
-                         *ngFor="let amount of amounts.entrances" [amount]="amount">
+                        >
         </app-card-amount>
       </div>
 

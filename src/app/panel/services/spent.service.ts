@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
-import {Amount} from "../interfaces/interfaces";
+import {Amount, updateResponseAmounts} from "../interfaces/interfaces";
 import {Observable} from "rxjs";
 @Injectable({
   providedIn: 'root'
@@ -47,10 +47,10 @@ export class SpentService {
    *
    * @param id
    */
-  delete(id: string) {
+  delete(id: string) : Observable<updateResponseAmounts> {
     let url = `${this.base_url}/app/delete-spent/${id}`;
     console.log(url);
-    return this.http.delete(url);
+    return this.http.delete<updateResponseAmounts>(url);
   }
 
   allByUser(uid: string) : Observable<Amount>{

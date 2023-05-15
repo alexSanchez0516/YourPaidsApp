@@ -7,8 +7,6 @@ import {Router} from "@angular/router";
 import {AuthService} from "../../services/auth.service";
 import {User} from "../../../interfaces/User";
 import {emailPattern, notSpacer} from "../../../helpers/Patterns";
-
-
 const googleLogoURL = "https://raw.githubusercontent.com/fireflysemantics/logo/master/Google.svg";
 
 @Component({
@@ -18,11 +16,12 @@ const googleLogoURL = "https://raw.githubusercontent.com/fireflysemantics/logo/m
 })
 export class LoginComponent {
 
+  //test1@test.com - 123456789
   loginForm: FormGroup = this.fb.group({
-    'email': ['test1@test.com', [
+    'email': ['', [
       Validators.required, Validators.pattern(emailPattern)
     ],[]],
-    'password': ['123456789', [
+    'password': ['', [
       Validators.required, Validators.minLength(6),
       Validators.pattern(notSpacer)
     ],[]],
@@ -37,14 +36,34 @@ export class LoginComponent {
     private matIconRegistry: MatIconRegistry,
     private router: Router,
     private authService: AuthService,
-    private domSanitizer: DomSanitizer) {
+    private domSanitizer: DomSanitizer,
+    ) {
     this.matIconRegistry.addSvgIcon(
       "logo",
       this.domSanitizer.bypassSecurityTrustResourceUrl(googleLogoURL));
   }
 
+
+  signInWithGoogle(): void {
+
+  }
+
+  signOut(): void {
+
+  }
+
+  refreshToken(): void {
+  }
+
   public campoIsInvalid(item: string): boolean {
     return <boolean><unknown>this.loginForm.get(item)?.errors
+  }
+
+  ngOnInit(): void {
+    if (localStorage.getItem('token') != '') {
+      this.router.navigateByUrl('app/inicio').then();
+    }
+
   }
 
   login() {

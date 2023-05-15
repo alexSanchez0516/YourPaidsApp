@@ -139,10 +139,6 @@ export class LineChartComponent implements OnChanges, OnInit {
       for (let index = 0; index < this.QuantitysAmountByMonth.spents.length; index++) {
         this.calcByMonth.spents[index] = this.QuantitysAmountByMonth.spents[index].reduce((a, b) => a + b, 0);
       }
-      console.log(this.calcByMonth.spents);
-      console.log(this.calcByMonth.entrances);
-
-
 
       this.barChartData = {
         labels: this.ListMonthDashBoard.months,

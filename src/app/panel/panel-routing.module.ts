@@ -11,6 +11,7 @@ import {ConfigUserComponent} from "./pages/config-user/config-user.component";
 import {ErrorPageComponent} from "../shared/error-page/error-page.component";
 import {MovementsComponent} from "./pages/movements/movements.component";
 import { ControlsPaymentsComponent } from './pages/controls-payments/controls-payments.component';
+import { ControlComponent } from './pages/control/control.component';
 
 const routes: Routes = [
   {
@@ -62,6 +63,11 @@ const routes: Routes = [
         path: 'control-gastos',
         component: ControlsPaymentsComponent
       },
+      {
+        path: 'control-gastos/:id',
+        component: ControlComponent
+      },
+
       {
         path: '**',
         redirectTo: 'login'

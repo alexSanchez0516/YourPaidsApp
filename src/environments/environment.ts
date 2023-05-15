@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  endpoint: 'http://127.0.0.1:4000/api',
+  endpoint: 'http://217.182.170.28:4000/api',
   firebase: {
     apiKey: "AIzaSyCTKKaMg0vz3QHFYcTFkiEP4dNPf0OKLFw",
     authDomain: "paydsadnsdays.firebaseapp.com",

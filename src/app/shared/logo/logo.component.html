@@ -1,4 +1,11 @@
 <div fxLayout="row" class="m-3" (click)="redirectToHome()" fxLayoutAlign="center center">
-  <span class="mx-3">PaidsAndDays</span>
-  <mat-icon class="text-success icon-display">monetization_on</mat-icon>
+
+  <ng-container *ngIf="showBig; else elseTemplate">
+    <img src="../../../assets/logo_v1.png" alt="logotipo" style="width: 240px;">
+  </ng-container>
+  <ng-template #elseTemplate>
+    <img src="../../../assets/logo_v1.png" alt="logotipo" style="width: 50px;">
+
+  </ng-template>
+
 </div>

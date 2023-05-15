@@ -19,6 +19,11 @@ import {MatNativeDateModule} from "@angular/material/core";
 import {MatRadioModule} from '@angular/material/radio';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatTableModule} from '@angular/material/table';
+import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
+import {MatTooltipModule} from '@angular/material/tooltip';
+import {ClipboardModule} from '@angular/cdk/clipboard';
+
 @NgModule({
   declarations: [],
   imports: [
@@ -44,7 +49,11 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     MatNativeDateModule,
     MatRadioModule,
     MatPaginatorModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatTableModule,
+    MatBottomSheetModule,
+    MatTooltipModule,
+    ClipboardModule
   ]
 })
 export class MaterialModule { }

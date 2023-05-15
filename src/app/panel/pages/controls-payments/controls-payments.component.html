@@ -1,1 +1,169 @@
-<p>controls-payments works!</p>
+<div fxLayout="column"
+     fxLayoutGap="1rem"
+     class="mt-3 w-100 align-items-center animate__animated animate__fadeInLeftBig">
+
+     <div>
+      <button mat-button
+              mat-raised-button
+              routerLink="/app/inicio">Volver</button>
+     </div>
+
+
+     <h1 class="bg-success p-2">Controles</h1>
+
+
+     <span>Aqui puedes establecer controles por categoria, te explico:
+        <p>
+          Este apartado de la aplicación es
+          un sistema de control de gastos por categorias,
+          es decir, se podrá establecer un
+          máximo de gasto ya sea por día, semana o mes
+          de una determinada categoría y en el momento que
+          lleves el 50%, 75% y 100% de importe máximo
+          establecido se te notificara alertando
+          del porcentaje que llevas.
+        </p>
+    </span>
+
+
+    <div class="w-100" *ngIf="showList">
+      <h2>Listado</h2>
+
+      <div class="table-responsive">
+        <table class="table table-dark table-sm">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Categoria</th>
+              <th scope="col">Importe</th>
+              <th scope="col">% aviso</th>
+              <th scope="col">Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of controlsData.controls" (click)="select(data._id!)">
+              <th scope="row">{{1}}</th>
+              <td >{{seachTextCategory(data.category)}}</td>
+              <td *ngIf="currency == '€'; else elseTemplate">{{data.quantity | currency:'€'}}</td>
+              <ng-template #elseTemplate>
+                <td>{{data.quantity | currency}}</td>
+              </ng-template>
+              <td>{{data.porcentWarning}}%</td>
+              <td>{{data.active ? 'Activo' : 'Inactivo'}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+
+    <hr>
+
+
+    <form
+        [formGroup]="formControl"
+        (ngSubmit)="save()"
+        fxLayout="column wrap"
+        fxLayoutGap="1.5rem">
+
+        <mat-tab-group>
+          <mat-tab label="Control de gastos">
+            <div fxFlex="column">
+              <mat-form-field appearance="fill" class="w-100">
+                <mat-label>Buscar por categoría</mat-label>
+                <mat-select formControlName="category">
+                  <ng-container>
+                  <mat-option *ngFor="let category of categories.spents"
+                              [value]="category.id">
+                    <mat-icon color="accent">{{category.img_url}}</mat-icon>
+                    {{category.name}}
+                  </mat-option>
+                  </ng-container>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field class="w-100">
+                <mat-label>Importe </mat-label>
+                <input matInput formControlName="quantity">
+                <mat-error *ngIf="campoIsInvalid('quantity')">
+                  Por favor, introduce un importe válido
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="fill" class="w-100">
+                <mat-label>Porcentaje Notificacion</mat-label>
+                <mat-select formControlName="porcent">
+                  <ng-container>
+                  <mat-option [value]="50">
+                    50%
+                  </mat-option>
+                  <mat-option [value]="75">
+                    75%
+                  </mat-option>
+                  <mat-option [value]="90">
+                    90%
+                  </mat-option>
+                  <mat-option [value]="100">
+                    100%
+                  </mat-option>
+                  </ng-container>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field appearance="fill" class="w-100">
+                <mat-label>Periodo</mat-label>
+                <mat-select formControlName="period">
+                  <ng-container>
+                  <mat-option *ngFor="let period of periods"
+                              [value]="period.id">
+                    <mat-icon color="accent">pending_actions</mat-icon>
+                    {{period.name}}
+                  </mat-option>
+                  </ng-container>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-radio-group formControlName="active" aria-label="Select an option" class="w-100" *ngIf="update">
+                <mat-radio-button  [value]="true">Activo</mat-radio-button>
+                <mat-radio-button  [value]="false">Desactivar</mat-radio-button>
+              </mat-radio-group>
+
+              <div fxLayout="row" class="justify-content-between">
+
+                <div fxLayout="row" fxLayoutGap="1rem">
+                  <button mat-raised-button type="submit" class="bg-success">Guardar</button>
+                  <button *ngIf="update"
+                    (click)="this.deleteAction = true"
+                    mat-raised-button
+                    class="bg-danger"
+                    type="button"
+                    title="Eliminar">
+                  <mat-icon>
+                    delete
+                  </mat-icon>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </mat-tab>
+        </mat-tab-group>
+
+    </form>
+
+</div>
+
+
+<swal
+      title="¿Seguro que deseas eliminarlo?"
+      icon="error"
+      *ngIf="deleteAction"
+      cancelButtonText="Cancelar"
+      confirmButtonText="Eliminar"
+      confirmButtonColor="red"
+      [swalFireOnInit]="true"
+      icon="warning"
+      [showCancelButton]="true"
+      [focusCancel]="true"
+      (confirm)="delete()"
+      (didClose)="deleteAction = false">
+    </swal>

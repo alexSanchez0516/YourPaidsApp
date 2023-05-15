@@ -52,6 +52,9 @@ export class AuthService {
     if (resp.ok) {
       localStorage.setItem('uid', resp.uid)
       localStorage.setItem('token', resp.token!);
+      if (localStorage.getItem('currency') == undefined || localStorage.getItem('currency') == null) {
+        localStorage.setItem('currency', '€');
+      }
       this._user = {
         username: resp.username,
         uid: resp.uid,

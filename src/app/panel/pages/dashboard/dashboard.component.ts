@@ -10,7 +10,7 @@ import {ResponseAllAmounts} from "../../interfaces/interfaces";
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit{
-  indexSelected: number = 1;
+  indexSelected: number = 0;
 
   years: number[] = [];
   public amounts: ResponseAllAmounts;
@@ -23,7 +23,7 @@ export class DashboardComponent implements OnInit{
 
   public isLoading = true;
   months: string[] = [
-    "Ninguno",
+    " ",
     "Enero",
     "Febrero",
     "Marzo",
@@ -43,7 +43,7 @@ export class DashboardComponent implements OnInit{
   formFilter = this.fb.group({
     'month': [, [], []],
     'year': [this.currentDay.getFullYear(), [], []],
-    'typeAmount' :[, [], []],
+    'typeAmount' :[-1, [], []],
   })
 
   constructor(private fb: FormBuilder,

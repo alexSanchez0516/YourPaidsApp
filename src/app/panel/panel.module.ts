@@ -25,6 +25,7 @@ import { CardAmountComponent } from './components/card-amount/card-amount.compon
 import { PieChartComponent } from './components/pie-chart/pie-chart.component';
 import { LineChartComponent } from './components/line-chart/line-chart.component';
 import { ControlsPaymentsComponent } from './pages/controls-payments/controls-payments.component';
+import { ControlComponent } from './pages/control/control.component';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { ControlsPaymentsComponent } from './pages/controls-payments/controls-pa
     PieChartComponent,
     LineChartComponent,
     ControlsPaymentsComponent,
+    ControlComponent,
 
   ],
     imports: [

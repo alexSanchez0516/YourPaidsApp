@@ -19,7 +19,7 @@ export class BarChartComponent implements OnChanges, OnInit{
 
   public barChartData: ChartData<'bar'> = {
     labels: [moment().locale('es').month(new Date().getMonth()-1).format("MMMM"),
-      'Actual',
+      'Mes actual',
       String(new Date().getFullYear())],
     datasets: [
       { data: [], label: 'Gastos' },
@@ -29,12 +29,7 @@ export class BarChartComponent implements OnChanges, OnInit{
   };
 
 
-  public monthSelected: number;
-
-
-
   constructor(private amountService: AmountService) {
-    this.monthSelected = new Date().getMonth();
   }
 
   // events
@@ -78,8 +73,8 @@ export class BarChartComponent implements OnChanges, OnInit{
       let year = moment().locale('es').year();
       const beforeMonth = parseInt(moment().month(new Date().getMonth()-1).format("M"));
 
-
-      const responseCurrentMonth: ResponseAllAmounts = this.amountService.getSpentsAndEntrancesByMonth(this.monthSelected, year);
+      const responseCurrentMonth: ResponseAllAmounts = this.amountService.
+                                  getSpentsAndEntrancesByMonth(parseInt(moment().month(new Date().getMonth()).format("M")), year);
       responseCurrentMonth.spents.forEach((spent) => totalSpentCurrentMonth += spent.quantity);
       responseCurrentMonth.entrances.forEach((entrance) => totalEntranceCurrentMonth += entrance.quantity);
 

@@ -15,9 +15,55 @@
   update_at?: Date;
   paid: boolean;
   date_paid?: Date;
-
+  recurrent?: boolean;
+  createByRecurringService?: boolean;
   }
 
+
+  export interface responseAllRecurringAmount {
+    spentRecurring: Amount[];
+    entranceRecurring: Amount[];
+  }
+  export interface SpentRecurringAmount {
+    spents: Amount[];
+  }
+
+  export interface EntraceRecurringAmount {
+    entrances: Amount[];
+  }
+
+
+  export interface PeriodicElement {
+    _id?: string;
+    position: number;
+    type: string;
+    category: string;
+    quantity: number;
+    porcent: number;
+    create_at: Date;
+    active: boolean;
+  }
+
+  export interface Control {
+    _id?: string;
+    quantity: number;
+    user: string;
+    category: number;
+    create_at: Date;
+    active: boolean;
+    update_at?: Date;
+    porcentWarning?: number;
+    period: number;
+  }
+
+  export interface Period {
+    id: number;
+    name: string;
+  }
+
+  export interface ControlsResponse {
+    controls: Control[];
+  }
 
   export interface sumAmountByCategory {
     categoryName: string;
@@ -25,8 +71,22 @@
 
   }
 
+  export interface updateResponseControl {
+    data: Control;
+    status: string;
+  }
+
+  export interface updateResponseAmounts {
+    data: Amount;
+    status: string;
+  }
+
   export interface ListMonthDashBoard {
     months: string[];
+  }
+
+  export interface listSpent {
+    spents: Amount[];
   }
 
   export interface QuantitysAmountByMonth {

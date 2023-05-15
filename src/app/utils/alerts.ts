@@ -19,3 +19,17 @@ export function alertSuccessTimerShowHide(message : string) : void {
     timer: 1500
   }).then();
 }
+
+export function alertControlMessage(message: string) : void {
+
+  Swal.fire({
+    title: message,
+    showClass: {
+      popup: 'animate__animated animate__fadeInDown'
+    },
+    hideClass: {
+      popup: 'animate__animated animate__fadeOutUp'
+    }
+  }).then();
+
+}
