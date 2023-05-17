@@ -47,12 +47,12 @@ export class MainComponent implements OnInit{
             this.spents = [...spents.spents];
 
             this.calcBalance();
-            // this.balanceService.getBalance(this.spents, this.entrances);
-            // this.balance = this.balanceService.balance;
-            // this.balanceMonth = this.balanceService.balance_month;
-            // this.balanceService.filterForLatDayNumber(7);
-            // this.spentsLimit = this.balanceService.spentsLimit;
-            // this.entrancesLimit = this.balanceService.entrancesLimit;
+            this.balanceService.getBalance(this.spents, this.entrances);
+            this.balance = this.balanceService.balance;
+            this.balanceMonth = this.balanceService.balance_month;
+            this.balanceService.filterForLatDayNumber(7);
+            this.spentsLimit = this.balanceService.spentsLimit;
+            this.entrancesLimit = this.balanceService.entrancesLimit;
           }
         })
       }

@@ -1,0 +1,97 @@
+{
+  "spents" : [
+    {
+      "id": 1,
+      "name": "Autopista",
+      "img_url": "add_road"
+    },
+    {
+      "id": 2,
+      "name": "Diversión",
+      "img_url": "celebration"
+    },
+    {
+      "id": 3,
+      "name": "Comida",
+      "img_url": "ramen_dining"
+    },
+    {
+      "id": 4,
+      "name": "Educación",
+      "img_url": "schools"
+    },
+    {
+      "id": 5,
+      "name": "Gasolina",
+      "img_url": "oil_barrel"
+    },
+    {
+      "id": 6,
+      "name": "Hotel",
+      "img_url": "apartment"
+    },
+    {
+      "id": 7,
+      "name": "Mascota",
+      "img_url": "pets"
+    },
+    {
+      "id": 8,
+      "name": "Personales",
+      "img_url": "settings_accessibility "
+    },
+    {
+      "id": 9,
+      "name": "Restaurante",
+      "img_url": "restaurant"
+    },
+    {
+      "id": 10,
+      "name": "Ropa",
+      "img_url": "styler"
+    },
+    {
+      "id": 11,
+      "name": "Salud",
+      "img_url": "home_health"
+    },
+    {
+      "id": 12,
+      "name": "Transporte",
+      "img_url": "train"
+    },
+    {
+      "id": 13,
+      "name": "Vivienda",
+      "img_url": "home"
+    },
+    {
+      "id": 14,
+      "name": "Otros",
+      "img_url": "question_mark"
+    }
+  ],
+  "entrances": [
+    {
+      "id": 15,
+      "name": "Préstamo",
+      "img_url": "account_balance "
+    },
+    {
+      "id": 16,
+      "name": "Sueldo",
+      "img_url": "attach_money"
+    },
+    {
+      "id": 17,
+      "name": "Ventas",
+      "img_url": "trending_up "
+    },
+    {
+      "id": 18,
+      "name": "Otros",
+      "img_url": "question_mark"
+    }
+  ]
+
+}
