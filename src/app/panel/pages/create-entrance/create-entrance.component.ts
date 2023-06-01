@@ -20,7 +20,8 @@ export class CreateEntranceComponent implements OnInit{
     quantity: 0,
     user: "",
     paid: false,
-    date_paid: undefined
+    date_paid: undefined,
+    date_recurrent: undefined
   }
   update: boolean = false;
   url_public: string = '';

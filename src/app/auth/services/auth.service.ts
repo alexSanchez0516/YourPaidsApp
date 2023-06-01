@@ -78,6 +78,12 @@ export class AuthService {
       )
   }
 
+  getUser(uid: string): Observable<User> {
+    const url = `${this.baseUrl}/app/user/${uid}`;
+    console.log(url);
+    return this.http.get<User>(url);
+  }
+
   /**
    *
    */

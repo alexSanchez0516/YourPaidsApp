@@ -1,9 +1,11 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, inject} from '@angular/core';
 import {BalanceService} from "../../services/balance.service";
 import {Amount} from "../../interfaces/interfaces";
 import {EntranceService} from "../../services/entrance.service";
 import {SpentService} from "../../services/spent.service";
 import { RecurringAmountsService } from '../../services/recurring-amounts.service';
+import { User } from 'src/app/interfaces/User';
+import { AuthService } from 'src/app/auth/services/auth.service';
 
 
 @Component({
@@ -21,7 +23,10 @@ export class MainComponent implements OnInit{
   public allBalancePaids = true;
   public entrancesLimit: Amount[] = [];
   public spentsLimit: Amount[] = [];
+  public currectDate: Date = new Date();
   public currency = localStorage.getItem('currency');
+  public currentUser!: User;
+  public idUser = localStorage.getItem('uid') || ''
   constructor(private balanceService: BalanceService,
               private entranceService: EntranceService,
               private spentService: SpentService,
@@ -30,18 +35,30 @@ export class MainComponent implements OnInit{
 
   }
 
+  checkDepurar() {
+    if (this.idUser == '6478b2dfd57b764d01f35a53') {
+      console.log('Depurar');
+      return true;
+    }
+    console.log('Depurar no');
+    return false;
+  }
+
+  ChangeDate() {
+
+  }
+
   ngOnInit(): void {
 
 
     this.recurringService.getAmountsRecurring();
 
-    let idUser = localStorage.getItem('uid') || '';
 
-    this.entranceService.allByUser(idUser).subscribe({
+    this.entranceService.allByUser(this.idUser).subscribe({
       next: (entrances) => {
         // @ts-ignore
         this.entrances = [...entrances.entrances];
-        this.spentService.allByUser(idUser).subscribe({
+        this.spentService.allByUser(this.idUser).subscribe({
           next: (spents) => {
             // @ts-ignore
             this.spents = [...spents.spents];
@@ -61,7 +78,6 @@ export class MainComponent implements OnInit{
 
   calcBalance() {
     if (this.allBalancePaids) {
-      console.log('Calculating');
       const spents: Amount[] = this.spents.filter(spent => spent.paid);
       const entrances: Amount[] = this.entrances.filter(entrance => entrance.paid);
       this.balanceService.getBalance(spents, entrances);

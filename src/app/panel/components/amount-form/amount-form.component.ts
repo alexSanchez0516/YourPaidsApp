@@ -7,7 +7,8 @@ import {
   OnInit,
   Output,
   SimpleChanges,
-  ViewChild
+  ViewChild,
+  inject
 } from '@angular/core';
 import {FormBuilder, Validators} from "@angular/forms";
 import {Amount, Category} from "../../interfaces/interfaces";
@@ -27,6 +28,11 @@ import { v4 as uuidv4 } from "uuid";
 })
 export class AmountFormComponent implements OnInit, OnChanges{
 
+
+  private fb = inject(FormBuilder);
+  private sanitizer = inject(DomSanitizer);
+  private firebaseStorage = inject(FirebaseStorageService);
+
   @Input() categories!: Category[]
   @ViewChild('file') file!: ElementRef<HTMLInputElement>;
   @Input() amount: Amount = {
@@ -45,6 +51,13 @@ export class AmountFormComponent implements OnInit, OnChanges{
   matcher = new MyErrorStateMatcher();
   imgName: string = '';
   fileSend!: File;
+
+  selectedNumber!: string;
+  numbers: string[] = [
+    "01", "02", "03", "04", "05","06","07","08","09","10",
+    "11","12","13","14","15","16","17","18","19",
+    "20","21","22","23","24","25","26","27","28","29","30","31"
+  ];
 
   formAmount = this.fb.group({
     'name': ['', [
@@ -72,17 +85,21 @@ export class AmountFormComponent implements OnInit, OnChanges{
     ],[]],
     'img_url': ['',[],[]],
     'paid' : [false, [Validators.required],[]],
-    'date_paid' : [this.amount.date_paid,[],[]]
+    'date_paid' : [this.amount.date_paid,[],[]],
+    'date_recurrent' : [this.amount.date_recurrent,[],[]]
   });
   isDelete: boolean = false;
 
-  constructor(private fb: FormBuilder,
-              private sanitizer: DomSanitizer,
-              private firebaseStorage: FirebaseStorageService,
+
+  constructor(
   ) {}
 
   public campoIsInvalid(item: string): boolean {
     return <boolean><unknown>this.formAmount.get(item)?.errors
+  }
+
+  public checkRecurrent() {
+    return this.formAmount.value.recurrent || false;
   }
 
   /**
@@ -102,10 +119,13 @@ export class AmountFormComponent implements OnInit, OnChanges{
       this.amount.paid = <boolean>this.formAmount.get('paid')?.value;
       this.amount.create_at = <Date><unknown>this.formAmount.get('create_at')?.value ;
       this.amount.date_paid = undefined ;
+      this.amount.date_recurrent = undefined;
+
+      //** SOLO SE CREAN DE MANERA RECURRENTES AQUELLOS QUE ESTÁN MARCADO COMO PAGADOS */
       if (this.amount.paid) {
         this.amount.date_paid = <Date><unknown>this.formAmount.get('date_paid')?.value ;
-        // console.log(this.formAmount.get('date_paid')?.value);return;
         this.amount.recurrent = <boolean>this.formAmount.get('recurrent')?.value;
+        this.amount.date_recurrent = <string><unknown>this.formAmount.get('date_recurrent')?.value ;
       }
 
       if (this.fileSend) {
@@ -113,8 +133,8 @@ export class AmountFormComponent implements OnInit, OnChanges{
           lastPhotoPath = this.amount.img_url;
           this.firebaseStorage.delete(lastPhotoPath)
             .then()
-            .catch((err) => {
-              console.log(err);
+            .catch((error) => {
+              alertError(`Ha ocurrido un error al guardar la imagen --> ${error}`);
             })
         }
         const nameImg = `${uuidv4()}-${this.fileSend.name}`;
@@ -133,7 +153,7 @@ export class AmountFormComponent implements OnInit, OnChanges{
                     this.OnAmount.emit(this.amount);
                   },
                   error: (error) => {
-                    alertError("Ha ocurrido un error en el proceso, vuelve intentar más tarde");
+                    alertError(`Ha ocurrido un error en el proceso, vuelve intentar más tarde --> ${error}`);
                   }
                 });
             }

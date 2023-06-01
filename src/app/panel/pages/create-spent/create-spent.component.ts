@@ -22,7 +22,8 @@ export class CreateSpentComponent implements OnInit{
     quantity: 0,
     user: "",
     paid: false,
-    date_paid: new Date
+    date_paid: new Date,
+    date_recurrent: undefined
   }
   update: boolean = false;
   url_public: string = '';

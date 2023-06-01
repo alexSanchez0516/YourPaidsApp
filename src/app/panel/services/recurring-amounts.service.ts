@@ -18,48 +18,48 @@ export class RecurringAmountsService {
     let idUser = localStorage.getItem('uid') || '';
     let url = `${environment.endpoint}/app/recurring/user/${idUser}`;
     console.log(url);
-    this.http.get<responseAllRecurringAmount>(url).subscribe({
-      next: (response) => {
-        response.entranceRecurring.forEach((entrance) => {
-          if (entrance.createByRecurringService == undefined || entrance.createByRecurringService == null || !entrance.createByRecurringService) {
-            entrance._id = undefined;
-            entrance.createByRecurringService = true;
-            entrance.create_at = new Date();
-            entrance.date_paid = new Date();
+    // this.http.get<responseAllRecurringAmount>(url).subscribe({
+    //   next: (response) => {
+    //     response.entranceRecurring.forEach((entrance) => {
+    //       if (entrance.createByRecurringService == undefined || entrance.createByRecurringService == null || !entrance.createByRecurringService) {
+    //         entrance._id = undefined;
+    //         entrance.createByRecurringService = true;
+    //         entrance.create_at = new Date();
+    //         entrance.date_paid = new Date();
 
-            this.entranceService.save(entrance).subscribe({
-              next: (response) => {
-                console.log(response);
-              },
-              error: (error) => {
-                console.log(error);
-              }
-            });
-          }
-        });
-        response.spentRecurring.forEach((spent) => {
-          if (spent.createByRecurringService == undefined || spent.createByRecurringService == null || !spent.createByRecurringService) {
-            spent._id = undefined;
-            spent.createByRecurringService = true;
-            spent.create_at = new Date();
-            spent.date_paid = new Date();
-            this.spentService.save(spent).subscribe({
-              next: (response) => {
-                console.log(response);
-              },
-              error: (error) => {
-                console.log(error);
-              }
-            });
-          }
+    //         this.entranceService.save(entrance).subscribe({
+    //           next: (response) => {
+    //             console.log(response);
+    //           },
+    //           error: (error) => {
+    //             console.log(error);
+    //           }
+    //         });
+    //       }
+    //     });
+    //     response.spentRecurring.forEach((spent) => {
+    //       if (spent.createByRecurringService == undefined || spent.createByRecurringService == null || !spent.createByRecurringService) {
+    //         spent._id = undefined;
+    //         spent.createByRecurringService = true;
+    //         spent.create_at = new Date();
+    //         spent.date_paid = new Date();
+    //         this.spentService.save(spent).subscribe({
+    //           next: (response) => {
+    //             console.log(response);
+    //           },
+    //           error: (error) => {
+    //             console.log(error);
+    //           }
+    //         });
+    //       }
 
-        });
+    //     });
 
-      },
-      error: (error) => {
-        console.log(error);
-      }
-    });
+    //   },
+    //   error: (error) => {
+    //     console.log(error);
+    //   }
+    // });
   }
 
 }

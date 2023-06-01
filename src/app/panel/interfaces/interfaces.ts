@@ -17,6 +17,7 @@
   date_paid?: Date;
   recurrent?: boolean;
   createByRecurringService?: boolean;
+  date_recurrent?: string;
   }
 
 

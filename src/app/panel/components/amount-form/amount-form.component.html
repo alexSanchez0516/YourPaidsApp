@@ -109,6 +109,16 @@
       <mat-radio-button [value]=false>No</mat-radio-button>
     </mat-radio-group>
 
+    <mat-form-field>
+      <mat-label>Día de creación automática</mat-label>
+      <mat-select formControlName="date_recurrent" [(value)]="selectedNumber">
+        <mat-option *ngFor="let number of numbers" [value]="number">
+          {{ number }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <span>(el sistema detecta si el dia es mayor al mes en que se creará pos entonces se crea el último día que tenga ese mes)</span>
+
 
     <div fxLayout="row" class="justify-content-between">
 

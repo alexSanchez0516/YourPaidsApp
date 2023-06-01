@@ -23,16 +23,21 @@
       </mat-chip>
     </ng-template>
 
-
-
-
     <ng-container *ngIf="allBalancePaids; else elseTemplateContabil">
       <button id="contabil" (click)="accountForEverything()" mat-raised-button class="p-1">Contabilizar todo</button>
     </ng-container>
     <ng-template #elseTemplateContabil>
       <button id="contabil" (click)="accountForEverything()" mat-raised-button class="p-1">Contabilizar solo pagado</button>
-
     </ng-template>
+
+
+    <mat-chip class="mat-mdc-chip-set-stacked">
+      {{this.currectDate| date}}
+    </mat-chip>
+
+    <mat-chip (click)="ChangeDate()" *ngIf="this.checkDepurar()" class="mat-mdc-chip-set-stacked">
+      Cambiar fecha
+    </mat-chip>
 
 
   </div>
